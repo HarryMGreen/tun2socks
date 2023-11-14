@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy/proto"
 )
@@ -22,6 +23,18 @@ func (b *Base) Addr() string {
 
 func (b *Base) Proto() proto.Proto {
 	return b.proto
+}
+
+func (b *Base) IsChan() bool {
+	return proto.Chan == b.proto
+}
+
+func (b *Base) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Base) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 func (b *Base) DialContext(context.Context, *M.Metadata) (net.Conn, error) {

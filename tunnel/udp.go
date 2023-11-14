@@ -15,6 +15,10 @@ import (
 
 // TODO: Port Restricted NAT support.
 func (t *Tunnel) handleUDPConn(uc adapter.UDPConn) {
+	if proxy.IsChan() {
+		proxy.PassUdp(uc)
+		return
+	}
 	defer uc.Close()
 
 	id := uc.ID()
