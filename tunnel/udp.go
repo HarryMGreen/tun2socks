@@ -23,6 +23,10 @@ func SetUDPTimeout(t time.Duration) {
 
 // TODO: Port Restricted NAT support.
 func handleUDPConn(uc adapter.UDPConn) {
+	if proxy.IsChan() {
+		proxy.PassUdp(uc)
+		return
+	}
 	defer uc.Close()
 
 	id := uc.ID()
