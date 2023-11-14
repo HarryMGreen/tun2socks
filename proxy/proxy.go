@@ -6,6 +6,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy/proto"
 )
@@ -19,6 +20,9 @@ var _defaultDialer Dialer = &Base{}
 type Dialer interface {
 	DialContext(context.Context, *M.Metadata) (net.Conn, error)
 	DialUDP(*M.Metadata) (net.PacketConn, error)
+	IsChan() bool
+	PassTcp(conn adapter.TCPConn) error
+	PassUdp(conn adapter.UDPConn) error
 }
 
 type Proxy interface {
@@ -47,4 +51,16 @@ func DialContext(ctx context.Context, metadata *M.Metadata) (net.Conn, error) {
 // DialUDP uses default Dialer to dial UDP.
 func DialUDP(metadata *M.Metadata) (net.PacketConn, error) {
 	return _defaultDialer.DialUDP(metadata)
+}
+
+func IsChan() bool {
+	return _defaultDialer.IsChan()
+}
+
+func PassTcp(conn adapter.TCPConn) error {
+	return _defaultDialer.PassTcp(conn)
+}
+
+func PassUdp(conn adapter.UDPConn) error {
+	return _defaultDialer.PassUdp(conn)
 }

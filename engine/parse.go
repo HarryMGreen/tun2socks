@@ -96,6 +96,8 @@ func parseProxy(s string) (proxy.Proxy, error) {
 		return parseShadowsocks(u)
 	case proto.Relay.String():
 		return parseRelay(u)
+	case proto.Chan.String():
+		return proxy.NewChan(), nil
 	default:
 		return nil, fmt.Errorf("unsupported protocol: %s", protocol)
 	}
