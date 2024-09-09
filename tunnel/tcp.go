@@ -11,13 +11,12 @@ import (
 	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/log"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
-	"github.com/xjasonlyu/tun2socks/v2/proxy"
 	"github.com/xjasonlyu/tun2socks/v2/tunnel/statistic"
 )
 
 func (t *Tunnel) handleTCPConn(originConn adapter.TCPConn) {
-	if proxy.IsChan() {
-		proxy.PassTcp(originConn)
+	if t.Dialer().IsChan() {
+		t.Dialer().PassTcp(originConn)
 		return
 	}
 	defer originConn.Close()

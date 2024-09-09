@@ -10,14 +10,13 @@ import (
 	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/log"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
-	"github.com/xjasonlyu/tun2socks/v2/proxy"
 	"github.com/xjasonlyu/tun2socks/v2/tunnel/statistic"
 )
 
 // TODO: Port Restricted NAT support.
 func (t *Tunnel) handleUDPConn(uc adapter.UDPConn) {
-	if proxy.IsChan() {
-		proxy.PassUdp(uc)
+	if t.Dialer().IsChan() {
+		t.Dialer().PassUdp(uc)
 		return
 	}
 	defer uc.Close()
