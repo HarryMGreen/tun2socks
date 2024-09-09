@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"net"
+	"net/netip"
 
 	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
@@ -45,11 +46,13 @@ func NewChan() *Chan {
 
 func (c *Chan) PassTcp(conn adapter.TCPConn) error {
 	id := conn.ID()
+	srcIP, _ := netip.AddrFromSlice(id.RemoteAddress.AsSlice())
+	dstIP, _ := netip.AddrFromSlice(id.LocalAddress.AsSlice())
 	metadata := M.Metadata{
 		Network: M.TCP,
-		SrcIP:   net.IP(id.RemoteAddress.AsSlice()),
+		SrcIP:   srcIP,
 		SrcPort: id.RemotePort,
-		DstIP:   net.IP(id.LocalAddress.AsSlice()),
+		DstIP:   dstIP,
 		DstPort: id.LocalPort,
 	}
 	pd := PassData{
@@ -63,11 +66,13 @@ func (c *Chan) PassTcp(conn adapter.TCPConn) error {
 
 func (b *Chan) PassUdp(conn adapter.UDPConn) error {
 	id := conn.ID()
+	srcIP, _ := netip.AddrFromSlice(id.RemoteAddress.AsSlice())
+	dstIP, _ := netip.AddrFromSlice(id.LocalAddress.AsSlice())
 	metadata := M.Metadata{
 		Network: M.UDP,
-		SrcIP:   net.IP(id.RemoteAddress.AsSlice()),
+		SrcIP:   srcIP,
 		SrcPort: id.RemotePort,
-		DstIP:   net.IP(id.LocalAddress.AsSlice()),
+		DstIP:   dstIP,
 		DstPort: id.LocalPort,
 	}
 	pd := PassData{
