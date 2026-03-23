@@ -15,10 +15,6 @@ import (
 )
 
 func (t *Tunnel) handleTCPConn(originConn adapter.TCPConn) {
-	if t.Dialer().IsChan() {
-		t.Dialer().PassTcp(originConn)
-		return
-	}
 	defer originConn.Close()
 
 	id := originConn.ID()
