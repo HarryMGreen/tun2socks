@@ -2,11 +2,13 @@ package reject
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net"
 	"net/url"
 	"time"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
 )
@@ -23,6 +25,14 @@ func (r *Reject) DialContext(context.Context, *M.Metadata) (net.Conn, error) {
 
 func (r *Reject) DialUDP(*M.Metadata) (net.PacketConn, error) {
 	return &nopPacketConn{}, nil
+}
+
+func (b *Reject) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Reject) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 type nopConn struct{}

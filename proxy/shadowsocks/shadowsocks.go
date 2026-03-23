@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -79,6 +80,14 @@ func (ss *Shadowsocks) DialUDP(*M.Metadata) (net.PacketConn, error) {
 
 	pc = ss.cipher.PacketConn(pc)
 	return &ssPacketConn{PacketConn: pc, rAddr: udpAddr}, nil
+}
+
+func (b *Shadowsocks) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Shadowsocks) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 type ssPacketConn struct {

@@ -16,6 +16,7 @@ import (
 	"github.com/gorilla/schema"
 
 	"github.com/xjasonlyu/tun2socks/v2/buffer"
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -53,6 +54,14 @@ func (rl *Relay) DialUDP(metadata *M.Metadata) (net.PacketConn, error) {
 	defer cancel()
 
 	return rl.dialContext(ctx, metadata)
+}
+
+func (b *Relay) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Relay) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 func (rl *Relay) dialContext(ctx context.Context, metadata *M.Metadata) (rc *relayConn, err error) {

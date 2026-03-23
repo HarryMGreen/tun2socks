@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -50,6 +51,14 @@ func (h *HTTP) DialContext(ctx context.Context, metadata *M.Metadata) (c net.Con
 
 func (h *HTTP) DialUDP(*M.Metadata) (net.PacketConn, error) {
 	return nil, errors.ErrUnsupported
+}
+
+func (b *HTTP) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *HTTP) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 func (h *HTTP) shakeHand(metadata *M.Metadata, rw io.ReadWriter) error {

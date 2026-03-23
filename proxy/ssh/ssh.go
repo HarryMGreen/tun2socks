@@ -10,6 +10,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -81,6 +82,14 @@ func (s *SSH) DialContext(ctx context.Context, metadata *M.Metadata) (_ net.Conn
 
 func (s *SSH) DialUDP(*M.Metadata) (net.PacketConn, error) {
 	return nil, errors.ErrUnsupported
+}
+
+func (b *SSH) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *SSH) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 type sshConn struct {

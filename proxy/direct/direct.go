@@ -2,9 +2,11 @@ package direct
 
 import (
 	"context"
+	"errors"
 	"net"
 	"net/url"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -32,6 +34,14 @@ func (d *Direct) DialUDP(*M.Metadata) (net.PacketConn, error) {
 		return nil, err
 	}
 	return &directPacketConn{PacketConn: pc}, nil
+}
+
+func (b *Direct) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Direct) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 type directPacketConn struct {

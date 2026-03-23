@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/url"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -145,6 +146,14 @@ func (ss *Socks5) DialUDP(*M.Metadata) (_ net.PacketConn, err error) {
 	}
 
 	return &socksPacketConn{PacketConn: pc, rAddr: bindAddr, tcpConn: c}, nil
+}
+
+func (b *Socks5) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Socks5) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 type socksPacketConn struct {

@@ -15,6 +15,10 @@ import (
 )
 
 func (t *Tunnel) handleTCPConn(originConn adapter.TCPConn) {
+	if err := t.Proxy().PassTcp(originConn); err == nil {
+		return
+	}
+
 	defer originConn.Close()
 
 	id := originConn.ID()

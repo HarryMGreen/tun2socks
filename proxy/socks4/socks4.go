@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/url"
 
+	"github.com/xjasonlyu/tun2socks/v2/core/adapter"
 	"github.com/xjasonlyu/tun2socks/v2/dialer"
 	M "github.com/xjasonlyu/tun2socks/v2/metadata"
 	"github.com/xjasonlyu/tun2socks/v2/proxy"
@@ -45,6 +46,14 @@ func (ss *Socks4) DialContext(ctx context.Context, metadata *M.Metadata) (c net.
 
 func (ss *Socks4) DialUDP(*M.Metadata) (net.PacketConn, error) {
 	return nil, errors.ErrUnsupported
+}
+
+func (b *Socks4) PassTcp(conn adapter.TCPConn) error {
+	return errors.ErrUnsupported
+}
+
+func (b *Socks4) PassUdp(conn adapter.UDPConn) error {
+	return errors.ErrUnsupported
 }
 
 func Parse(u *url.URL) (proxy.Proxy, error) {
